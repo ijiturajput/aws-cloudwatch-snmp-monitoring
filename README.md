@@ -1,29 +1,39 @@
-# aws-cloudwatch-snmp-monitoring
-AWS CloudWatch and SNMP-based monitoring project with alerting
-# 🚀 AWS CloudWatch + SNMP Monitoring Project
+📌 Project Overview
 
----
+This project demonstrates how to monitor a Linux server using SNMP and send metrics to AWS CloudWatch.
+It also sets up CloudWatch Alarms and sends notifications using SNS (Email Alerts).
 
-## 📌 What is this project?
-
-This project shows how to monitor a Linux server using **SNMP** and send data to **AWS CloudWatch**.
-It also creates alerts using **CloudWatch Alarm** and sends notifications via **SNS (Email)**.
-
-👉 Simple words:
+👉 In simple words:
 Server monitoring + alert system using AWS
 
----
-
-## 🛠️ Tools Used
-
-* AWS EC2 (Linux Server)
-* SNMP (Net-SNMP)
-* AWS CloudWatch
-* CloudWatch Agent
-* AWS SNS (Email Alert)
-* Linux Commands
+🛠️ Tools & Technologies Used
+AWS EC2 (Linux Server)
+SNMP (Net-SNMP)
+AWS CloudWatch
+CloudWatch Agent
+AWS SNS (Simple Notification Service)
+Bash Scripting
+Amazon Linux 2
 
 ---
+
+🖥️ Infrastructure Details
+✅ EC2 Instances Used
+Total EC2 Instances: 1
+Instance Type: t2.micro (Free Tier)
+
+👉 A single EC2 instance is used where:
+
+SNMP Agent is installed
+CloudWatch Agent is installed
+Metrics are collected and sent to CloudWatch
+✅ Operating System
+OS Used: Amazon Linux 2
+🤔 Why Amazon Linux?
+Optimized for AWS
+Easy CloudWatch integration
+Lightweight and stable
+Simple package management (yum)
 
 ## 🏗️ Architecture
 
@@ -35,103 +45,80 @@ EC2 (SNMP) → CloudWatch Agent → CloudWatch → Alarm → SNS → Email
 
 ---
 
-## ⚙️ Step-by-Step Setup (Beginner Friendly)
+## ⚙️ Step-by-Step Setup 
 
-### ✅ Step 1: Launch EC2
+⚙️ Automated Setup (Using Script)
 
-* Go to AWS Console
-* Launch EC2 instance (Amazon Linux / CentOS)
-* Allow SSH (port 22)
+This project uses a shell script to automate installation of SNMP and CloudWatch Agent.
 
----
+▶️ Run the script:
+chmod +x install_monitoring.sh
+./install_monitoring.sh
+⚡ What this script does:
+Installs SNMP (net-snmp)
+Starts and enables the SNMP service
+Configures the SNMP community string
+Installs CloudWatch Agent
+⚠️ Next Step (Manual)
 
-### ✅ Step 2: Install SNMP
+After running the script, configure CloudWatch Agent:
 
-```bash
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+⚙️ Manual Setup (Step-by-Step)
+1️⃣ Launch EC2
+Go to AWS Console
+Launch EC2 instance
+Select Amazon Linux 2
+Choose t2.micro
+Allow SSH (port 22)
+2️⃣ Install SNMP (if not using script)
 sudo yum install net-snmp -y
 sudo systemctl start snmpd
 sudo systemctl enable snmpd
-```
-
-Check status:
-
-```bash
-sudo systemctl status snmpd
-```
-
----
-
-### ✅ Step 3: Configure SNMP
-
-Open config file:
-
-```bash
+3️⃣ Configure SNMP
 sudo vi /etc/snmp/snmpd.conf
-```
 
 Add:
 
-```bash
 rocommunity public
-```
 
-Restart SNMP:
+Restart:
 
-```bash
 sudo systemctl restart snmpd
-```
-
----
-
-### ✅ Step 4: Install CloudWatch Agent
-
-```bash
+4️⃣ Install CloudWatch Agent
 sudo yum install amazon-cloudwatch-agent -y
-```
-
----
-
-### ✅ Step 5: Configure CloudWatch Agent
-
-Run wizard:
-
-```bash
+5️⃣ Configure CloudWatch Agent
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
-```
 
-Start agent:
+Start:
 
-```bash
 sudo systemctl start amazon-cloudwatch-agent
-```
+📊 CloudWatch Dashboard
+Go to AWS → CloudWatch
+Create Dashboard
+Add CPU, Memory metrics
 
----
+🚨 CloudWatch Alarm
+Create alarm (Example: CPU > 70%)
+Attach SNS topic for alert
+📧 SNS Email Alert Setup
 
-### ✅ Step 6: Create CloudWatch Dashboard
+AWS SNS is used to send alert notifications via email.
 
-* Go to AWS → CloudWatch
-* Click Dashboards → Create Dashboard
-* Add metrics (CPU, Memory)
+Steps:
+Go to AWS SNS
+Click "Create Topic"
+Enter topic name (e.g., monitoring-alerts)
+Click "Create Subscription"
+Select protocol: Email
+Enter your email ID
+Confirm subscription from your email
 
----
+👉 Connect this SNS topic with CloudWatch Alarm
 
-### ✅ Step 7: Create Alarm
+Result:
 
-* Go to CloudWatch → Alarms
-* Create Alarm
-* Example:
-
-  * CPU > 70%
-* Select SNS for notification
-
----
-
-### ✅ Step 8: Setup SNS (Email Alert)
-
-* Go to SNS
-* Create Topic
-* Subscribe Email
-* Confirm email
+When the CPU crosses the threshold, you receive an email alert 🚀
 
 ---
 
@@ -165,8 +152,7 @@ Jitu Rajput
 
 ---
 
-## ⭐ Future Improvements
-
-* Add Prometheus & Grafana
-* Use Terraform for automation
-* Integrate with Kubernetes (EKS)
+#⭐ Future Improvements
+Add Prometheus & Grafana
+Automate using Terraform
+Multi-server monitoring
