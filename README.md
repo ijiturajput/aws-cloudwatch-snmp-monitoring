@@ -52,66 +52,101 @@ EC2 (SNMP) → CloudWatch Agent → CloudWatch → Alarm → SNS → Email
 This project uses a shell script to automate installation of SNMP and CloudWatch Agent.
 
 ▶️ Run the script:
+
 chmod +x install_monitoring.sh
+
 ./install_monitoring.sh
+
+
 ⚡ What this script does:
+
 Installs SNMP (net-snmp)
 Starts and enables the SNMP service
 Configures the SNMP community string
 Installs CloudWatch Agent
-⚠️ Next Step (Manual)
 
+⚠️ Next Step (Manual)
 After running the script, configure CloudWatch Agent:
 
+
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+
+
 ⚙️ Manual Setup (Step-by-Step)
+
 1️⃣ Launch EC2
 Go to AWS Console
 Launch EC2 instance
 Select Amazon Linux 2
 Choose t2.micro
-Allow SSH (port 22)
+Allow SSH (port 22),161 port for SNMP
+
 2️⃣ Install SNMP (if not using script)
+
 sudo yum install net-snmp -y
+
 sudo systemctl start snmpd
+
 sudo systemctl enable snmpd
+
 3️⃣ Configure SNMP
+
 sudo vi /etc/snmp/snmpd.conf
 
-Add:
 
+Add:
 rocommunity public
 
 Restart:
 
 sudo systemctl restart snmpd
+
+
 4️⃣ Install CloudWatch Agent
+
 sudo yum install amazon-cloudwatch-agent -y
+
 5️⃣ Configure CloudWatch Agent
+
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+
 
 Start:
 
+
 sudo systemctl start amazon-cloudwatch-agent
+
 📊 CloudWatch Dashboard
+
 Go to AWS → CloudWatch
+
 Create Dashboard
 Add CPU, Memory metrics
 
 🚨 CloudWatch Alarm
+
 Create alarm (Example: CPU > 70%)
+
 Attach SNS topic for alert
+
 📧 SNS Email Alert Setup
 
 AWS SNS is used to send alert notifications via email.
 
 Steps:
+
 Go to AWS SNS
+
 Click "Create Topic"
+
 Enter topic name (e.g., monitoring-alerts)
+
 Click "Create Subscription"
+
 Select protocol: Email
+
 Enter your email ID
+
 Confirm subscription from your email
 
 👉 Connect this SNS topic with CloudWatch Alarm
