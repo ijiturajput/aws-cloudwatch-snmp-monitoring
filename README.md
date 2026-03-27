@@ -192,6 +192,9 @@ Jitu Rajput
 ---
 
 #⭐ Future Improvements
+
 Add Prometheus & Grafana
+
 Automate using Terraform
+
 Multi-server monitoring
