@@ -1,4 +1,8 @@
-📌 Project Overview
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
+![Monitoring](https://img.shields.io/badge/Monitoring-SNMP-blue)
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
+ 
+ 📌 Project Overview
 
 This project demonstrates how to monitor a Linux server using SNMP and send metrics to AWS CloudWatch.
 It also sets up CloudWatch Alarms and sends notifications using SNS (Email Alerts).
